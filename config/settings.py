@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # third party app
     'crispy_forms',
     'crispy_bootstrap5',
+    "phonenumber_field",
 ]
 
 MIDDLEWARE = [
@@ -111,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 
@@ -130,3 +131,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Config CustomUserModel
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
+# crispy form config
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"

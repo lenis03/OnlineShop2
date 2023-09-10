@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
+from phonenumber_field.modelfields import PhoneNumberField
 
 from .managers import CustomUserManger
 
 
 class CustomUser(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
-    phone_number = models.CharField(max_length=11, unique=True)
+    phone_number = PhoneNumberField(region='IR', unique=True)
     user_name = models.CharField(max_length=50)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -32,3 +33,11 @@ class CustomUser(AbstractBaseUser):
         return self.is_admin
 
 
+class OtpCode(models.Model):
+    phone_number = PhoneNumberField(region='IR', unique=True)
+    code = models.PositiveSmallIntegerField()
+    created = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.phone_number}-{self.code}-{self.created}'
+    

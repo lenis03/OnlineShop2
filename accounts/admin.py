@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import Group
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser
+from .models import CustomUser, OtpCode
 
 
 @admin.register(CustomUser)
@@ -58,4 +58,8 @@ class CustomUserAdmin(BaseUserAdmin):
 
 admin.site.unregister(Group)
 
+
+@admin.register(OtpCode)
+class OtpCodeAdmin(admin.ModelAdmin):
+    list_display = ('phone_number', 'code', 'created')
 
