@@ -134,5 +134,11 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # crispy form config
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# Authentication Backend Config
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'accounts.backends.PhoneOrEmailAuthenticationBackends',
+]

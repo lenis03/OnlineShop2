@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Verify Login Code
+{% endblock %}
+
+{% block content %}
+    <form class="col-md-6" action="" method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <a class="btn btn-warning" href="{% url 'accounts:user_login_resend_verify_code' %}">ResendCode</a><br><br>
+        <input class="btn btn-primary" type="submit" value="Send Verify Code">
+    </form>
+{% endblock  %}

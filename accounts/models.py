@@ -34,7 +34,7 @@ class CustomUser(AbstractBaseUser):
 
 
 class OtpCode(models.Model):
-    phone_number = PhoneNumberField(region='IR', unique=True)
+    phone_number = PhoneNumberField(region='IR')
     code = models.PositiveSmallIntegerField()
     created = models.DateTimeField(auto_now=True)
 

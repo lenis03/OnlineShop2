@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
+import re
 
 from .models import CustomUser
 
@@ -85,3 +86,23 @@ class UserRegisterForm(forms.Form):
 
 class VerifyCodeForm(forms.Form):
     code = forms.IntegerField()
+
+
+class UserLoginForm(forms.Form):
+    phone_email = forms.CharField(label='(PhoneNumber)Or(EmailAddress)')
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+    def clean_phone_email(self):
+        data = self.cleaned_data['phone_email']
+        if '@' in data:
+            email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$'
+            if not re.match(email_pattern, data):
+                raise ValidationError('The email address is invalid!')
+        else:
+            phone_pattern = r'^\+98\d{10}$'
+            if not re.match(phone_pattern, data):
+                raise ValidationError('The phone number is invalid. Please enter with prefix +98 and next 10 digits'
+                                      '(like this: +981234567890)')
+
+        return data
+
