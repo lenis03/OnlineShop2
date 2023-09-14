@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     # local app
     'home.apps.HomeConfig',
     'accounts.apps.AccountsConfig',
-    # third party app
+    'products.apps.ProductsConfig',
+    # third-party app
     'crispy_forms',
     'crispy_bootstrap5',
     "phonenumber_field",
