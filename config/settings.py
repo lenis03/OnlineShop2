@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     "phonenumber_field",
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +149,12 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'accounts.backends.PhoneOrEmailAuthenticationBackends',
 ]
+
+# Arvan Cloud Storage
+DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
+AWS_S3_ACCESS_KEY_ID = '9572b160-2474-457a-a885-2f9c44f7546f'
+AWS_SECRET_ACCESS_KEY = '913b4e911ffc06c0a57c9333565046bfd4942d93433a583215d0f74c8ddf3272'
+AWS_S3_ENDPOINT_URL = 'https://s3.ir-thr-at1.arvanstorage.com'
+AWS_STORAGE_BUCKET_NAME = 'django-online-shop2'
+AWS_SERVICE_NAME = 'S3'
+AWS_S3_FILE_OVERWRITE = False
