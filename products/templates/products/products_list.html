@@ -4,15 +4,18 @@
     Products List
 {% endblock %}
 {% block content %}
-    {% for product in products %}
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="{{ product.image.url }}" alt="Product Image">
-            <div class="card-body">
-                <h5 class="card-title"><a href=" {{ product.get_absolute_url }}">{{ product.name}}</a></h5>
-                <p class="card-text">{{ product.description|truncatechars:100 }}</p>
-                <p>price: {{ product.price }}$</p>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4" style="width: 18rem;">
+                <div class="card product-card">
+                    <img class="card-img-top" src="{{ product.image.url }}" alt="Product Image">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h5>
+                        <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                        <p>Price: {{ product.price }}$</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    {% endfor %}
-
+        {% endfor %}
+    </div>
 {% endblock %}
