@@ -30,5 +30,9 @@ class Bucket:
         self.conn.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
         return True
 
+    def download_object(self, obj_name):
+        with open(settings.AWS_LOCAL_STORAGE + obj_name, 'wb') as f:
+            self.conn.download_fileobj(settings.AWS_STORAGE_BUCKET_NAME, obj_name, f)
+
 
 bucket = Bucket()
