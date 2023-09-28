@@ -4,6 +4,7 @@ from django.contrib import messages
 
 from products.models import Product
 from products import tasks
+from utils import IsAdminUser
 
 
 class ProductsListView(View):
@@ -18,7 +19,7 @@ class ProductDetailView(View):
         return render(request, 'products/product_detail.html', {'product': product})
 
 
-class ProductBucketView(View):
+class ProductBucketView(IsAdminUser, View):
     template_name = 'products/product_bucket.html'
 
     def get(self, request):
@@ -26,14 +27,14 @@ class ProductBucketView(View):
         return render(request, self.template_name, {'objects': objects})
 
 
-class DeleteObjectBucketView(View):
+class DeleteObjectBucketView(IsAdminUser, View):
     def get(self, request, key):
         tasks.delete_obj_bucket_task.delay(key)
         messages.info(request, 'Your object will be delete soon!', 'info')
         return redirect('products:product_bucket')
 
 
-class DownloadBucketObjectView(View):
+class DownloadBucketObjectView(IsAdminUser, View):
     def get(self, request, obj_name):
         tasks.download_obj_from_bucket.delay(obj_name)
         messages.info(request, 'Your download will start soon.', 'info')

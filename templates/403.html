@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    403
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex align-items-center justify-content-center vh-100">
+        <div class="text-center">
+            <h1 class="display-1 fw-bold">403</h1>
+            <p class="fs-3"><span class="text-danger">Opps!</span> Permission Denied.</p>
+            <p class="lead">
+                You do not have access to the page you are looking for!
+            </p>
+            <a href="{% url 'home:home' %}" class="btn btn-primary">Go Home</a>
+{% endblock %}
