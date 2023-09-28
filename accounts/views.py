@@ -3,7 +3,7 @@ from django.views import View
 from django.utils import timezone
 from datetime import timedelta
 import random
-from utils import send_otp_code
+from tasks import send_otp_code
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth import authenticate
@@ -33,7 +33,7 @@ class UserRegisterView(View):
             cd = form.cleaned_data
             random_code = random.randint(100000, 999999)
             OtpCode.objects.create(phone_number=cd['phone_number'], code=random_code)
-            send_otp_code(str(cd['phone_number']), random_code)
+            send_otp_code.delay(str(cd['phone_number']), random_code)
             request.session['user_registration_info'] = {
                 'phone_number': str(cd['phone_number']),
                 'email': cd['email'],
@@ -116,7 +116,7 @@ class UserRegisterResendVerifyCodeView(View):
                     existing_code.delete()
                     randon_code = random.randint(100000, 999999)
                     OtpCode.objects.create(phone_number=phone_number, code=randon_code)
-                    send_otp_code(phone_number, randon_code)
+                    send_otp_code.delay(phone_number, randon_code)
                     messages.success(request, 'A new code has been send to your phone', 'success')
                     return redirect('accounts:user_verify_code')
                 else:
@@ -125,7 +125,7 @@ class UserRegisterResendVerifyCodeView(View):
             else:
                 randon_code = random.randint(100000, 999999)
                 OtpCode.objects.create(phone_number=phone_number, code=randon_code)
-                send_otp_code(phone_number, randon_code)
+                send_otp_code.delay(phone_number, randon_code)
                 messages.success(request, 'A new code has been send to your phone', 'success')
                 return redirect('accounts:user_verify_code')
 
@@ -167,7 +167,7 @@ class UserLoginView(View):
                 if '@' in phone_email:
                     user_instance = get_object_or_404(CustomUser, email=str(phone_email))
                     OtpCode.objects.create(phone_number=user_instance.phone_number, code=random_code)
-                    send_otp_code(str(user_instance.phone_number), random_code)
+                    send_otp_code.delay(str(user_instance.phone_number), random_code)
                     if self.next:
                         request.session['user_login_info'] = {
                             'user_id': user_instance.id,
@@ -185,7 +185,7 @@ class UserLoginView(View):
                 else:
                     user_instance = get_object_or_404(CustomUser, phone_number=phone_email)
                     OtpCode.objects.create(phone_number=str(user_instance.phone_number), code=random_code)
-                    send_otp_code(str(user_instance.phone_number), random_code)
+                    send_otp_code.delay(str(user_instance.phone_number), random_code)
 
                     if self.next:
                         request.session['user_login_info'] = {
@@ -276,7 +276,7 @@ class UserLoginResendVerifyCode(View):
                     existing_code.delete()
                     random_code = random.randint(100000, 999999)
                     OtpCode.objects.create(phone_number=phone_number, code=random_code)
-                    send_otp_code(phone_number=phone_number, code=random_code)
+                    send_otp_code.delay(phone_number=phone_number, code=random_code)
                     messages.success(request, 'A new code has been send to your phone', 'success')
                     return redirect('accounts:user_login_verify_code')
                 else:
@@ -284,7 +284,7 @@ class UserLoginResendVerifyCode(View):
                     return redirect('accounts:user_login_verify_code')
             else:
                 OtpCode.objects.create(phone_number=phone_number, code=random_code)
-                send_otp_code(phone_number=phone_number, code=random_code)
+                send_otp_code.delay(phone_number=phone_number, code=random_code)
                 messages.success(request, 'A new code has been send to your phone', 'success')
                 return redirect('accounts:user_login_verify_code')
         else:
