@@ -4,9 +4,13 @@
     Products List
 {% endblock %}
 {% block content %}
+    {% for category in categorise %}
+        <a class="btn btn-primary" href="{% url 'products:category_filter' category.slug %}">{{ category.name }}</a>
+    {% endfor %}<br><br>
+
     <div class="row">
         {% for product in products %}
-            <div class="col-md-4" style="width: 18rem;">
+            <div class="col-md-4" style="width: 18rem; display: inline-block">
                 <div class="card product-card">
                     <img class="card-img-top" src="{{ product.image.url }}" alt="Product Image">
                     <div class="card-body">

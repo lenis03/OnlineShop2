@@ -2,15 +2,19 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.contrib import messages
 
-from products.models import Product
+from products.models import Product, Category
 from products import tasks
 from utils import IsAdminUser
 
 
 class ProductsListView(View):
-    def get(self, request):
+    def get(self, request, category_slug=None):
         products = Product.objects.filter(available=True)
-        return render(request, 'products/products_list.html', {'products': products})
+        categories = Category.objects.all()
+        if category_slug:
+            category = get_object_or_404(Category, slug=category_slug)
+            products = Product.objects.filter(category=category)
+        return render(request, 'products/products_list.html', {'products': products, 'categorise': categories})
 
 
 class ProductDetailView(View):
