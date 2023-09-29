@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     "phonenumber_field",
     'storages',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
