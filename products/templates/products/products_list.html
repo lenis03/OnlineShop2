@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
     {% for category in categorise %}
-        <a class="btn btn-primary" href="{% url 'products:category_filter' category.slug %}">{{ category.name }}</a>
+        <a class="btn btn-primary" href="{{ category.get_absolute_url }}">{{ category.name }}</a>
     {% endfor %}<br><br>
 
     <div class="row">
