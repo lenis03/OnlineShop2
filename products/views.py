@@ -10,7 +10,7 @@ from utils import IsAdminUser
 class ProductsListView(View):
     def get(self, request, category_slug=None):
         products = Product.objects.filter(available=True)
-        categories = Category.objects.all()
+        categories = Category.objects.filter(is_sub=False)
         if category_slug:
             category = get_object_or_404(Category, slug=category_slug)
             products = Product.objects.filter(category=category)
