@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'accounts.apps.AccountsConfig',
     'products.apps.ProductsConfig',
+    'orders.apps.OrdersConfig',
     # third-party app
     'crispy_forms',
     'crispy_bootstrap5',
