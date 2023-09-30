@@ -10,10 +10,11 @@
     <img src="{{ product.image.url }}" alt="Product Image" width="300" height="300"><br>
     <details>{{ product.description }}</details><br>
     <p>price: {{ product.price }}$</p><br><br>
-    <form  class="col-md-1"  action="" method="post">
+    <form class="col-md-1" action="{% url 'orders:cart_add' product.id %}" method="post">
         {% csrf_token %}
         {{ form|crispy }}
-        <button class="btn btn-primary" type="submit">AddToCart</button>
+        <input class="btn btn-primary" type="submit" value="AddToCart">
+
 
     </form>
 {% endblock %}
