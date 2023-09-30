@@ -10,5 +10,5 @@ class CartView(View):
 
 
 class CartAddView(View):
-    def get(self, request):
+    def get(self, request, product_id):
         pass
