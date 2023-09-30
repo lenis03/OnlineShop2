@@ -5,6 +5,7 @@ from django.contrib import messages
 from products.models import Product, Category
 from products import tasks
 from utils import IsAdminUser
+from orders.forms import AddToCartForm
 
 
 class ProductsListView(View):
@@ -18,9 +19,12 @@ class ProductsListView(View):
 
 
 class ProductDetailView(View):
+    form_class = AddToCartForm
+
     def get(self, request, slug):
         product = get_object_or_404(Product, slug=slug)
-        return render(request, 'products/product_detail.html', {'product': product})
+        form = self.form_class
+        return render(request, 'products/product_detail.html', {'product': product, 'form': form})
 
 
 class ProductBucketView(IsAdminUser, View):
