@@ -25,6 +25,9 @@ class Cart:
             item['total_price'] = float(item['price']) * item['quantity']
             yield item
 
+    def __len__(self):
+        return len([key for key in self.cart.keys()])
+
     def add(self, product, quantity):
         product_id = str(product.id)
         if product_id not in self.cart:
