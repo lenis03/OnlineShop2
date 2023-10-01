@@ -12,6 +12,8 @@
             <th scope="col">Quantity</th>
             <th scope="col">UnitPrice</th>
             <th scope="col">TotalPrice</th>
+            <th scope="col">Remove</th>
+
         </tr>
         </thead>
         <tbody>
@@ -20,14 +22,16 @@
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ item.product }}</td>
                 <td>{{ item.quantity }}</td>
-                <td>{{ item.price }}</td>
-                <td>{{ item.total_price }}</td>
+                <td>{{ item.price }}$</td>
+                <td>{{ item.total_price }}$</td>
+                <td><a href="{% url 'orders:cart_item_remove' item.product.id %}">remove</a></td>
+
             </tr>
         {% endfor %}
         <tr>
             <td>Total:</td>
-            <td colspan="3"></td>
-            <td>{{ cart.get_total_price }}</td>
+            <td colspan="4"></td>
+            <td>{{ cart.get_total_price }}$</td>
         </tr>
         </tbody>
     </table>
