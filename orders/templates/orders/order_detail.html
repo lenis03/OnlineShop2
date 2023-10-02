@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}
+    OrderDetail
+{% endblock %}
+
+{% block content %}
+    <h3>Checkout</h3>
+    <p>TotalPrice: {{ order.get_total_price }}</p>
+{% endblock %}
