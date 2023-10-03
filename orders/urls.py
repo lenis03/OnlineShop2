@@ -12,5 +12,6 @@ urlpatterns = [
     path('verify/', views.OrderVerifyView.as_view(), name='order_verify'),
     path('cart/add/<int:product_id>/', views.CartAddView.as_view(), name='cart_add'),
     path('cart/remove/<int:product_id>/', views.CartItemRemoveView.as_view(), name='cart_item_remove'),
+    path('coupon_apply/<int:order_id>/', views.CouponApplyView.as_view(), name='coupon_apply'),
 
 ]

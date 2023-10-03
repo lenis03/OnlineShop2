@@ -6,11 +6,12 @@ from django.conf import settings
 import json
 from django.http import HttpResponse
 from django.contrib import messages
+from datetime import datetime
 
 from products.models import Product
-from orders.forms import AddToCartForm
+from orders.forms import AddToCartForm, CouponApplyForm
 from orders.cart import Cart
-from orders.models import Order, OrderItems
+from orders.models import Order, OrderItems, Coupon
 
 
 class CartView(View):
@@ -45,10 +46,12 @@ class CartItemRemoveView(View):
 
 class OrderDetailView(LoginRequiredMixin, View):
     template_name = 'orders/order_detail.html'
+    form_class = CouponApplyForm
 
     def get(self, request, order_id):
         order = get_object_or_404(Order, id=order_id)
-        return render(request, self.template_name, {'order': order})
+        form = self.form_class
+        return render(request, self.template_name, {'order': order, 'form': form})
 
 
 class OrderCreateView(LoginRequiredMixin, View):
@@ -168,3 +171,23 @@ class OrderVerifyView(LoginRequiredMixin, View):
             order.return_products_to_cart(request)
             messages.error(request, 'The transaction was unsuccessful or canceled by user !', 'danger')
             return redirect('orders:cart')
+
+
+class CouponApplyView(LoginRequiredMixin, View):
+    form_class = CouponApplyForm
+
+    def post(self, request, order_id):
+        now = datetime.now()
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data['code']
+            try:
+                coupon = Coupon.objects.get(code__exact=code, valid_from__lte = now, valid_to__gte=now, active=True)
+            except Coupon.DoesNotExist:
+                messages.error(request, 'This coupon does not exist', 'danger')
+                return redirect('orders:order_detail', order_id)
+
+            order = get_object_or_404(Order, id=order_id)
+            order.discount = coupon.discount
+            order.save()
+            return redirect('orders:order_detail', order_id)

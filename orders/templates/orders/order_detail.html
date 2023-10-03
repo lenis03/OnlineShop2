@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}
     OrderDetail
 {% endblock %}
 
 {% block content %}
-    <h3>Checkout</h3>
+    <h2>Checkout</h2>
     <p>TotalPrice: {{ order.get_total_price }}</p>
-    <a class="btn btn-primary" href="{% url 'orders:order_pay' order.id %}">Pay</a>
+    <a class="btn btn-primary" href="{% url 'orders:order_pay' order.id %}">Pay</a><br><br>
+    <h4>Coupon Code:</h4>
+    <form class="col-md-6" action="{% url 'orders:coupon_apply' order.id %}" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input class="btn btn-primary" type="submit" value="Apply">
+    </form>
 {% endblock %}
