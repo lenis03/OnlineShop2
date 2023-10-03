@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 from products.models import Product
+from orders.cart import Cart
 
 
 class Order(models.Model):
@@ -9,6 +10,10 @@ class Order(models.Model):
     is_paid = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    zarinpal_authority = models.CharField(max_length=255, blank=True)
+    zarinpal_ref_id = models.CharField(max_length=150, blank=True)
+    zarinpal_data = models.TextField(blank=True)
 
     class Meta:
         ordering = ('is_paid', '-updated')
@@ -18,6 +23,13 @@ class Order(models.Model):
 
     def get_total_price(self):
         return sum([item.get_cost() for item in self.items.all()])
+
+    def return_products_to_cart(self, request):
+        cart = Cart(request)
+        rec_cart = None
+        for item in self.items.all():
+            rec_cart = cart.add(item.product, item.quantity)
+        return rec_cart
 
 
 class OrderItems(models.Model):

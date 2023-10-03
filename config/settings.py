@@ -162,3 +162,8 @@ AWS_STORAGE_BUCKET_NAME = 'django-online-shop2'
 AWS_SERVICE_NAME = 's3'
 AWS_S3_FILE_OVERWRITE = False
 AWS_LOCAL_STORAGE = f'{BASE_DIR}/aws/'
+
+
+# ZarinPal
+SANDBOX = True
+ZARINPALL_MERCHANT_ID = 'aaabbbaaabbbaaabbbaaabbbaaabbbaaabbb'
