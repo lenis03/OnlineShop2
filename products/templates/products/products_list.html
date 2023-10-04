@@ -28,7 +28,7 @@
                     <img class="card-img-top" src="{{ product.image.url }}" alt="Product Image">
                     <div class="card-body">
                         <h5 class="card-title"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h5>
-                        <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                        <p class="card-text">{{ product.description|truncatechars:100|safe }}</p>
                         <p>Price: {{ product.price }}$</p>
                     </div>
                 </div>
