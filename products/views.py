@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.contrib import messages
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from products.models import Product, Category
 from products import tasks
@@ -35,7 +36,9 @@ class ProductBucketView(IsAdminUser, View):
         return render(request, self.template_name, {'objects': objects})
 
 
-class DeleteObjectBucketView(IsAdminUser, View):
+class DeleteObjectBucketView(PermissionRequiredMixin, View):
+    permission_required = 'is_superuser'
+
     def get(self, request, key):
         tasks.delete_obj_bucket_task.delay(key)
         messages.info(request, 'Your object will be delete soon!', 'info')

@@ -33,8 +33,11 @@ class CustomUserAdmin(BaseUserAdmin):
         )}),
         ('Permissions', {'fields': (
             'is_admin',
+            'is_superuser',
             'is_active',
-            'last_login'
+            'last_login',
+            'groups',
+            'user_permissions',
         )})
 
     )
@@ -53,10 +56,8 @@ class CustomUserAdmin(BaseUserAdmin):
 
     search_fields = ('user_name', 'email')
     ordering = ('user_name', )
-    filter_horizontal = ()
-
-
-admin.site.unregister(Group)
+    filter_horizontal = ('groups', 'user_permissions')
+    readonly_fields = ('last_login', )
 
 
 @admin.register(OtpCode)
