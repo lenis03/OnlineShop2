@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     "phonenumber_field",
     'storages',
     'django_celery_beat',
+    'ckeditor',
+
 ]
 
 MIDDLEWARE = [
@@ -179,3 +181,11 @@ AWS_LOCAL_STORAGE = f'{BASE_DIR}/aws/'
 # ZarinPal
 SANDBOX = True
 ZARINPALL_MERCHANT_ID = 'aaabbbaaabbbaaabbbaaabbbaaabbbaaabbb'
+
+# ckeditor config
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+    },
+}

@@ -8,7 +8,7 @@
     <h2>{{ product.name }}</h2>
     <small>{{ product.created }}</small><br><br>
     <img src="{{ product.image.url }}" alt="Product Image" width="300" height="300"><br>
-    <details>{{ product.description }}</details><br>
+    <details>{{ product.description|safe }}</details><br>
     <p>price: {{ product.price }}$</p><br><br>
     <form class="col-md-1" action="{% url 'orders:cart_add' product.id %}" method="post">
         {% csrf_token %}
