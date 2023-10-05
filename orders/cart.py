@@ -1,3 +1,4 @@
+from django.contrib import messages
 from products.models import Product
 
 CART_SESSION_ID = 'cart'
@@ -5,6 +6,7 @@ CART_SESSION_ID = 'cart'
 
 class Cart:
     def __init__(self, request):
+        self.request = request
         self.session = request.session
         cart = self.session.get(CART_SESSION_ID)
 
@@ -28,11 +30,19 @@ class Cart:
     def __len__(self):
         return len([key for key in self.cart.keys()])
 
-    def add(self, product, quantity):
+    def add(self, product, quantity, replace_current_quantity=False):
         product_id = str(product.id)
         if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
-        self.cart[product_id]['quantity'] += quantity
+        if replace_current_quantity:
+            self.cart[product_id]['quantity'] = min(quantity, 10)
+            if quantity > 10:
+                messages.error(self.request, 'You cannot add more than ten products', 'danger')
+        else:
+            if self.cart[product_id]['quantity'] + quantity <= 10:
+                self.cart[product_id]['quantity'] += quantity
+            else:
+                messages.error(self.request, 'You cannot add more than ten products', 'danger')
         self.save()
 
     def remove(self, product):

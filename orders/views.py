@@ -16,10 +16,12 @@ from orders.models import Order, OrderItems, Coupon
 
 class CartView(View):
     template_name = 'orders/cart.html'
+    form_class = AddToCartForm
 
     def get(self, request):
         cart = Cart(request)
-        return render(request, self.template_name, {'cart': cart})
+        form = self.form_class
+        return render(request, self.template_name, {'cart': cart, 'form': form})
 
 
 class CartAddView(View):
@@ -191,3 +193,21 @@ class CouponApplyView(LoginRequiredMixin, View):
             order.discount = coupon.discount
             order.save()
             return redirect('orders:order_detail', order_id)
+
+
+class ChangeProductQuantity(LoginRequiredMixin, View):
+    form_class = AddToCartForm
+
+    def post(self, request, product_id):
+        form = self.form_class(request.POST)
+        cart = Cart(request)
+        product = get_object_or_404(Product, id=product_id)
+        if form.is_valid():
+            cart.add(product, form.cleaned_data['quantity'], replace_current_quantity=True)
+            return redirect('orders:cart')
+        else:
+            messages.error(self.request, 'You cannot add more than ten products', 'danger')
+            return redirect('orders:cart')
+
+
+

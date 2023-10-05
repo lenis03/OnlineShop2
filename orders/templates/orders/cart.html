@@ -21,7 +21,25 @@
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td>{{ item.product }}</td>
-                <td>{{ item.quantity }}</td>
+                <td>
+                    <form method="post"
+                          action="{% url 'orders:change_product_quantity' item.product.id %}"
+                          class="d-flex"
+                    >
+                        {% csrf_token %}
+                        <div>
+                            <input
+                                    type="number"
+                                    name="quantity"
+                                    value="{{ item.quantity }}"
+                                    min="1"
+                                    max="10"
+                            >
+                        </div>
+
+                        <input type="submit" class="" value="Change">
+                    </form>
+                </td>
                 <td>{{ item.price }}$</td>
                 <td>{{ item.total_price }}$</td>
                 <td><a href="{% url 'orders:cart_item_remove' item.product.id %}">remove</a></td>
