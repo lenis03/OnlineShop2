@@ -87,12 +87,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'onlineshope2',
-        'USER': 'postgres',
-        'PASSWORD': '@#3921013690Fr@#',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'USER': 'root',
+        'PASSWORD': '24860036',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
